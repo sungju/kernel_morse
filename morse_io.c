@@ -32,33 +32,33 @@ void nosound(void) {
 	value &= TONE_OFF;
 	outb(value, PIO);
 }
-#define SPACE_MASK	(1 << 15)
-#define BIT_MASK	(0xFE)
-#define UNIT_TIME	(60)
-#define FREQUENCY	(2000)
+#define MORSE_SPACE_MASK	(1 << 15)
+#define MORSE_BIT_MASK	(0xFE)
+#define MORSE_UNIT_TIME	(60)
+#define MORSE_FREQUENCY	(2000)
 
 void send_dot(void) {
-	sound(FREQUENCY);
-	mdelay(UNIT_TIME);
+	sound(MORSE_FREQUENCY);
+	mdelay(MORSE_UNIT_TIME);
 	nosound();
-	mdelay(UNIT_TIME);
+	mdelay(MORSE_UNIT_TIME);
 }
 void send_dash(void) {
-	sound(FREQUENCY);
-	mdelay(UNIT_TIME * 3);
+	sound(MORSE_FREQUENCY);
+	mdelay(MORSE_UNIT_TIME * 3);
 	nosound();
-	mdelay(UNIT_TIME);
+	mdelay(MORSE_UNIT_TIME);
 }
 void letter_space(void) {
-	mdelay(UNIT_TIME * 2);
+	mdelay(MORSE_UNIT_TIME * 2);
 }
 void word_space(void) {
-	mdelay(UNIT_TIME * 4);
+	mdelay(MORSE_UNIT_TIME * 4);
 }
 void morse(char *cp) {
 	unsigned int c;
 	static unsigned int codes[64] = {
-		SPACE_MASK, 0, 0, 0, 0, 0, 0, 0,
+		MORSE_SPACE_MASK, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 115, 49, 106, 41,
 		63, 62, 60, 56, 48, 32, 33, 35,
 		39, 47, 0, 0, 0, 0, 0, 76,
@@ -67,15 +67,15 @@ void morse(char *cp) {
 		22, 27, 10, 8, 3, 12, 24, 14,
 		25, 29, 19
 	};
-	while ((c = *cp++) != '�') {
+	while ((c = *cp++) != '\0') {
 		if (c >= 'a' && c <= 'z') c = c - 'a' + 'A';
 		c -= ' ';
 		if (c > 58) continue;
 		c = codes[c];
-		if (c & SPACE_MASK) {
+		if (c & MORSE_SPACE_MASK) {
 			word_space(); continue;
 		}
-		while (c & BIT_MASK) {
+		while (c & MORSE_BIT_MASK) {
 			if (c & 1) send_dash();
 			else send_dot();
 			c >>= 1;
