@@ -6,8 +6,8 @@ Morse sounds generator : kernel example
 ~~~
 $ make
 $ su
-$ insmod ./morse_io.ko
-$ DEVID=`grep morse /proc/devices | awk '{print $1}'`
-$ mknod ./morse c $DEVID 0
-$ echo SOS > ./morse
+$ make install
+$ modprobe morse_io
+$ echo SOS > /dev/morse0
+$ rmmod morse_io
 ~~~
