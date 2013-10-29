@@ -3,8 +3,12 @@ PWD := $(shell pwd)
 
 obj-m += morse_io.o
 
-default:
-	$(MAKE) -C $(KERNEL_DIR) SUBDIRS=$(PWD) modules
+default: modules
+modules:
+	@$(MAKE) -C $(KERNEL_DIR) M=$(PWD) modules
+
+modules_install:
+	@$(MAKE) -C $(KERNEL_DIR) M=$(PWD) modules_install	
 
 clean:
 	@rm -rf *.ko
