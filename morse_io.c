@@ -27,7 +27,7 @@
 struct class *my_class;
 
 #define MYDEV_NAME	"morse"
-#define MYDEV_DEV   "morse%d"
+#define MYDEV_DEV	"morse%d"
 
 static dev_t first;
 static unsigned int count = 2;
@@ -69,18 +69,22 @@ void send_dot(void) {
 	nosound();
 	mdelay(MORSE_UNIT_TIME);
 }
+
 void send_dash(void) {
 	sound(MORSE_FREQUENCY);
 	mdelay(MORSE_UNIT_TIME * 3);
 	nosound();
 	mdelay(MORSE_UNIT_TIME);
 }
+
 void letter_space(void) {
 	mdelay(MORSE_UNIT_TIME * 2);
 }
+
 void word_space(void) {
 	mdelay(MORSE_UNIT_TIME * 4);
 }
+
 void morse(char *cp) {
 	unsigned int c;
 	static unsigned int codes[64] = {
